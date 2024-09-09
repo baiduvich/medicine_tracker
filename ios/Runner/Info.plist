@@ -4,10 +4,28 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>UIBackgroundModes</key>
+	<array>
+  		<string>fetch</string>
+  		<string>remote-notification</string>
+	</array>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need access to send you medicine reminders.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to send you medicine reminders.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>We need access to send you medicine reminders.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+    	<key>NSAllowsArbitraryLoads</key>
+    	<true/>
+	</dict>
 	<key>CFBundleDisplayName</key>
 	<string>Medicine Reminder</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+	<key>AdaptyPublicSdkKey</key>
+	<string>public_live_bOhRKm2a.8NqqV24rPEusPBdh4PDr</string>
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>

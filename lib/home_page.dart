@@ -18,6 +18,18 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const Padding(
+              padding: EdgeInsets.only(bottom: 20.0), // Adds some spacing
+              child: Text(
+                'Add your medicine below and keep track of everything in the calendar.',
+                textAlign: TextAlign.center, // Center the text
+                style: TextStyle(
+                  color: Colors.white, // White text
+                  fontSize: 18, // Slightly bigger text
+                  fontWeight: FontWeight.bold, // Make text bold
+                ),
+              ),
+            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -28,7 +40,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 );
               },
-              child: Text('Calendar'),
+              child: const Text(
+                'Calendar',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold, // Make button text bold
+                ),
+              ),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -45,7 +62,12 @@ class _HomePageState extends State<HomePage> {
                   });
                 }
               },
-              child: Text('Track Medicine'),
+              child: const Text(
+                'Track Medicine',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold, // Make button text bold
+                ),
+              ),
             ),
           ],
         ),
