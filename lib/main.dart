@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'home_page.dart';
+import 'onboardingone.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:font_awesome_flutter/font_awesome_flutter.dart'; // For pill icon
+import 'package:adapty_flutter/adapty_flutter.dart'; // Adapty for paywall
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -44,7 +46,6 @@ void onDidReceiveNotificationResponse(
     NotificationResponse notificationResponse) {
   print("Notification tapped with payload: ${notificationResponse.payload}");
   if (notificationResponse.payload != null) {
-    // Define behavior when user taps on the notification
     print(
         'User tapped on notification with payload: ${notificationResponse.payload}');
   }
@@ -54,7 +55,6 @@ void onDidReceiveNotificationResponse(
 Future onDidReceiveLocalNotification(
     int id, String? title, String? body, String? payload) async {
   print('iOS notification received: $title - $body - $payload');
-  // Define behavior when a notification is received in iOS (optional)
 }
 
 class MedicineReminderApp extends StatelessWidget {
@@ -91,8 +91,59 @@ class MedicineReminderApp extends StatelessWidget {
   }
 }
 
-class StartPage extends StatelessWidget {
+class StartPage extends StatefulWidget {
   const StartPage({Key? key}) : super(key: key);
+
+  @override
+  _StartPageState createState() => _StartPageState();
+}
+
+class _StartPageState extends State<StartPage> {
+  final adapty = Adapty();
+  bool? hasLifetimeAccess;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkUserAccess();
+  }
+
+  Future<void> _checkUserAccess() async {
+    try {
+      print("Fetching Adapty profile...");
+      final profile = await adapty.getProfile();
+      print("Profile fetched: $profile");
+
+      setState(() {
+        hasLifetimeAccess = profile?.accessLevels['premium']?.isActive ?? false;
+      });
+    } catch (e) {
+      print("An error occurred while fetching user access: $e");
+      setState(() {
+        hasLifetimeAccess = false; // Assume no access on error
+      });
+    }
+  }
+
+  void _navigateBasedOnAccess() {
+    if (hasLifetimeAccess == null) {
+      return; // Still checking access, don't navigate yet
+    }
+
+    if (hasLifetimeAccess!) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage()), // HomePage for premium access
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => OnboardingOne()), // Onboarding for paywall
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -103,32 +154,26 @@ class StartPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const FaIcon(
-              // Pill icon from FontAwesome
               FontAwesomeIcons.pills,
-              size: 80, // Icon size
-              color: Colors.white, // Icon color
+              size: 80,
+              color: Colors.white,
             ),
             const SizedBox(height: 20),
             const Text(
               'Welcome to Medicine Reminder!',
               style: TextStyle(
-                fontSize: 24, // A little larger text size
+                fontSize: 24,
                 color: Colors.white,
-                fontWeight: FontWeight.bold, // Bold text
+                fontWeight: FontWeight.bold,
               ),
             ),
             const SizedBox(height: 40),
             ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => HomePage()),
-                );
-              },
+              onPressed: _navigateBasedOnAccess,
               child: const Text(
                 'Start',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold, // Make text bold
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

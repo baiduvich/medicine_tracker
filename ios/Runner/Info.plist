@@ -13,8 +13,6 @@
 	<string>We need access to send you medicine reminders.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>We need access to send you medicine reminders.</string>
-	<key>NSUserTrackingUsageDescription</key>
-	<string>We need access to send you medicine reminders.</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
     	<key>NSAllowsArbitraryLoads</key>

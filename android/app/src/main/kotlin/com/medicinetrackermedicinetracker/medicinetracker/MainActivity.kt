@@ -1,4 +1,4 @@
-package com.yourdomain.medicine_reminder
+package com.medicinetrackermedicinetracker.medicinetracker
 
 import io.flutter.embedding.android.FlutterActivity
 

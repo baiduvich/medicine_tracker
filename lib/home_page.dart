@@ -8,7 +8,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<DateTime> takenMedicines = [];
+  Map<DateTime, List<Map<String, dynamic>>> medicineLog =
+      {}; // Track medicines per date
 
   @override
   Widget build(BuildContext context) {
@@ -19,53 +20,60 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Padding(
-              padding: EdgeInsets.only(bottom: 20.0), // Adds some spacing
+              padding: EdgeInsets.only(bottom: 20.0),
               child: Text(
                 'Add your medicine below and keep track of everything in the calendar.',
-                textAlign: TextAlign.center, // Center the text
+                textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: Colors.white, // White text
-                  fontSize: 18, // Slightly bigger text
-                  fontWeight: FontWeight.bold, // Make text bold
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
+            // Button to navigate to the CalendarPage
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        CalendarPage(takenMedicines: takenMedicines),
+                    builder: (context) => CalendarPage(
+                      medicineLog:
+                          medicineLog, // Pass medicineLog to CalendarPage
+                    ),
                   ),
                 );
               },
               child: const Text(
                 'Calendar',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold, // Make button text bold
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
+            // Button to navigate to TrackMedicinePage
             ElevatedButton(
               onPressed: () async {
-                final updatedList = await Navigator.push(
+                final updatedLog = await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        TrackMedicinePage(takenMedicines: takenMedicines),
+                    builder: (context) => TrackMedicinePage(
+                      medicineLog:
+                          medicineLog, // Pass medicineLog to TrackMedicinePage
+                    ),
                   ),
                 );
-                if (updatedList != null) {
+                if (updatedLog != null) {
                   setState(() {
-                    takenMedicines = updatedList;
+                    medicineLog =
+                        updatedLog; // Update the medicineLog after returning
                   });
                 }
               },
               child: const Text(
                 'Track Medicine',
                 style: TextStyle(
-                  fontWeight: FontWeight.bold, // Make button text bold
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
